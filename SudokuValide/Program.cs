@@ -4,41 +4,24 @@
     {
         static void Main(string[] args)
         {
-            //string stringStart = "[[\"5\",\"3\",\".\",\".\",\"7\",\".\",\".\",\".\",\".\"]\r\n,[\"6\",\".\",\".\",\"1\",\"9\",\"5\",\".\",\".\",\".\"]\r\n,[\".\",\"9\",\"8\",\".\",\".\",\".\",\".\",\"6\",\".\"]\r\n,[\"8\",\".\",\".\",\".\",\"6\",\".\",\".\",\".\",\"3\"]\r\n,[\"4\",\".\",\".\",\"8\",\".\",\"3\",\".\",\".\",\"1\"]\r\n,[\"7\",\".\",\".\",\".\",\"2\",\".\",\".\",\".\",\"6\"]\r\n,[\".\",\"6\",\".\",\".\",\".\",\".\",\"2\",\"8\",\".\"]\r\n,[\".\",\".\",\".\",\"4\",\"1\",\"9\",\".\",\".\",\"5\"]\r\n,[\".\",\".\",\".\",\".\",\"8\",\".\",\".\",\"7\",\"9\"]]\r\n";
-            string stringStart = "[[\"8\",\"3\",\".\",\".\",\"7\",\".\",\".\",\".\",\".\"]\r\n,[\"6\",\".\",\".\",\"1\",\"9\",\"5\",\".\",\".\",\".\"]\r\n,[\".\",\"9\",\"8\",\".\",\".\",\".\",\".\",\"6\",\".\"]\r\n,[\"8\",\".\",\".\",\".\",\"6\",\".\",\".\",\".\",\"3\"]\r\n,[\"4\",\".\",\".\",\"8\",\".\",\"3\",\".\",\".\",\"1\"]\r\n,[\"7\",\".\",\".\",\".\",\"2\",\".\",\".\",\".\",\"6\"]\r\n,[\".\",\"6\",\".\",\".\",\".\",\".\",\"2\",\"8\",\".\"]\r\n,[\".\",\".\",\".\",\"4\",\"1\",\"9\",\".\",\".\",\"5\"]\r\n,[\".\",\".\",\".\",\".\",\"8\",\".\",\".\",\"7\",\"9\"]]\r\n";
-            int[,] sudokuArr = splitingTheString(stringStart);
+            string stringStart = "[[\"5\",\"3\",\"6\",\".\",\"7\",\".\",\".\",\".\",\".\"]\r\n,[\".\",\".\",\".\",\"1\",\"9\",\"5\",\".\",\".\",\".\"]\r\n,[\".\",\"9\",\"8\",\".\",\".\",\".\",\".\",\"6\",\".\"]\r\n,[\"8\",\".\",\".\",\".\",\"6\",\".\",\".\",\".\",\"3\"]\r\n,[\"4\",\".\",\".\",\"8\",\".\",\"3\",\".\",\".\",\"1\"]\r\n,[\"7\",\".\",\".\",\".\",\"2\",\".\",\".\",\".\",\"6\"]\r\n,[\".\",\"6\",\".\",\".\",\".\",\".\",\"2\",\"8\",\".\"]\r\n,[\".\",\".\",\".\",\"4\",\"1\",\"9\",\".\",\".\",\"5\"]\r\n,[\".\",\".\",\".\",\".\",\"8\",\".\",\".\",\"7\",\"9\"]]\r\n";
+            //string stringStart = "[[\"8\",\"3\",\".\",\".\",\"7\",\".\",\".\",\".\",\".\"]\r\n,[\"6\",\".\",\".\",\"1\",\"9\",\"5\",\".\",\".\",\".\"]\r\n,[\".\",\"9\",\"8\",\".\",\".\",\".\",\".\",\"6\",\".\"]\r\n,[\"8\",\".\",\".\",\".\",\"6\",\".\",\".\",\".\",\"3\"]\r\n,[\"4\",\".\",\".\",\"8\",\".\",\"3\",\".\",\".\",\"1\"]\r\n,[\"7\",\".\",\".\",\".\",\"2\",\".\",\".\",\".\",\"6\"]\r\n,[\".\",\"6\",\".\",\".\",\".\",\".\",\"2\",\"8\",\".\"]\r\n,[\".\",\".\",\".\",\"4\",\"1\",\"9\",\".\",\".\",\"5\"]\r\n,[\".\",\".\",\".\",\".\",\"8\",\".\",\".\",\"7\",\"9\"]]\r\n";
+            int[,] sudokuArr = splitingTheString(stringStart); 
             bool result = true;
 
             for (int i = 0; i < 9; i++)
-            {
-                if (!result)
+            {                             
+                int[] colums = new int[9];//Array for chechink columns
+                for (int k = 0; k < 9; k++) {colums[k] = sudokuArr[k, i]; }
+                
+                int[] row = new int[9];//Array for checking rows
+                for (int k = 0; k < 9; k++) { row[k] = sudokuArr[i, k]; }//Checking columns
+
+                for (int j = 0; j < 9; j++)//Checking each element in sudokuArr by Rows, Columns and Square
                 {
-                    break;
-                }
-                //Array for chechink columns
-                int[] colums = new int[9];
-                for (int k = 0; k < 9; k++)
-                {
-                    colums[k] = sudokuArr[k, i];
-                }
-                // Array for checking rows
-                int[] row = new int[9];
-                for (int k = 0; k < 9; k++)
-                {
-                    row[k] = sudokuArr[i, k];
-                }
-                //Checking each element in sudokuArr by Rows, Columns and Square
-                for (int j = 0; j < 9; j++)
-                {
-                    if (!result)
-                    {
-                        break;
-                    }
-                    result = istheNumberUnique(sudokuArr[i, j], row);
-                    if (result)
-                    {
-                        result = istheNumberUnique(sudokuArr[i, j], colums);
-                    }
+                    result = istheNumberUnique(sudokuArr[i, j], row);//Checking Row
+                    if (result) { result = istheNumberUnique(sudokuArr[i, j], colums);}//If there is an error we cn stop
+
                     if (result)
                     {
                         // Array for checking square
@@ -52,14 +35,12 @@
                                 indexSquare++;
                             }
                         }
-                        result = istheNumberUnique(sudokuArr[i, j], colums);
+                        result = istheNumberUnique(sudokuArr[i, j], square);
+                        if (!result){ break; }//If there is an error we cn stop
                     }
                 }
-
-
             }
             Console.WriteLine(result);
-
         }
 
         static int[,] splitingTheString(string stringStart)
