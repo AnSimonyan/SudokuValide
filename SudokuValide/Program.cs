@@ -20,36 +20,36 @@
                 for (int j = 0; j < 9; j++)//Checking each element in sudokuArr by Rows, Columns and Square
                 {
                     result = istheNumberUnique(sudokuArr[i, j], row);//Checking Row
-                    if (result) { result = istheNumberUnique(sudokuArr[i, j], colums);}//If there is an error we cn stop
+                    if (result) { result = istheNumberUnique(sudokuArr[i, j], colums); }//If there is an error we can stop
 
                     if (result)
                     {
                         // Array for checking square
-                        int[] square = new int[9];
-                        int indexSquare = 0;
-                        for (int k = (j / 3) * 3; k < (j / 3) * 3 + 3; k++)
+                        int[] square = new int[9]; int indexSquare = 0; 
+                        int squareLenght = 3; int startSquare = (j / squareLenght)*squareLenght;
+                        for (int k = startSquare; k < startSquare + squareLenght; k++)
                         {
-                            for (int l = (j / 3) * 3; l < (j / 3) * 3 + 3; l++)
+                            for (int l = startSquare; l < startSquare + squareLenght; l++)
                             {
                                 square[indexSquare] = sudokuArr[k, l];
                                 indexSquare++;
                             }
                         }
                         result = istheNumberUnique(sudokuArr[i, j], square);
-                        if (!result){ break; }//If there is an error we cn stop
+                        if (!result){ break; }//If there is an error we can stop
                     }
                 }
             }
             Console.WriteLine(result);
         }
 
-        static int[,] splitingTheString(string stringStart)
+        static int[,] splitingTheString(string stringStart) //SPLITTING THE ENTERED STRING 
         {
             int[,] sudokuArr = new int[9, 9];
-            char[] separators = new char[] { '\n' };
+            char[] separators = new char[] { '\n' }; //Splitting the string into rows
             string[] rowsEntered = stringStart.Split(separators, StringSplitOptions.RemoveEmptyEntries);
             int i = 0; int j = 0;
-            foreach (string row in rowsEntered)
+            foreach (string row in rowsEntered) //Spitting each row into array[,]
             {
                 char[] separatorsRow = new char[] { '\"' };
                 string[] elementsInRow = row.Split(separatorsRow, StringSplitOptions.RemoveEmptyEntries);
@@ -71,10 +71,10 @@
                 i = i + 1;
 
             }
-            return sudokuArr;
+            return sudokuArr; 
         }
 
-        static bool istheNumberUnique(int valueToSearch, int[] arrayToSearch)
+        static bool istheNumberUnique(int valueToSearch, int[] arrayToSearch) //Verifying if number is unique in the array []
         {
             bool resultToReturn = true;
             int numberOfOccurrences = 0;
