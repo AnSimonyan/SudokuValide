@@ -4,22 +4,62 @@
     {
         static void Main(string[] args)
         {
-            string stringStart = "[[\"5\",\"3\",\".\",\".\",\"7\",\".\",\".\",\".\",\".\"]\r\n,[\"6\",\".\",\".\",\"1\",\"9\",\"5\",\".\",\".\",\".\"]\r\n,[\".\",\"9\",\"8\",\".\",\".\",\".\",\".\",\"6\",\".\"]\r\n,[\"8\",\".\",\".\",\".\",\"6\",\".\",\".\",\".\",\"3\"]\r\n,[\"4\",\".\",\".\",\"8\",\".\",\"3\",\".\",\".\",\"1\"]\r\n,[\"7\",\".\",\".\",\".\",\"2\",\".\",\".\",\".\",\"6\"]\r\n,[\".\",\"6\",\".\",\".\",\".\",\".\",\"2\",\"8\",\".\"]\r\n,[\".\",\".\",\".\",\"4\",\"1\",\"9\",\".\",\".\",\"5\"]\r\n,[\".\",\".\",\".\",\".\",\"8\",\".\",\".\",\"7\",\"9\"]]\r\n";
-
+            //string stringStart = "[[\"5\",\"3\",\".\",\".\",\"7\",\".\",\".\",\".\",\".\"]\r\n,[\"6\",\".\",\".\",\"1\",\"9\",\"5\",\".\",\".\",\".\"]\r\n,[\".\",\"9\",\"8\",\".\",\".\",\".\",\".\",\"6\",\".\"]\r\n,[\"8\",\".\",\".\",\".\",\"6\",\".\",\".\",\".\",\"3\"]\r\n,[\"4\",\".\",\".\",\"8\",\".\",\"3\",\".\",\".\",\"1\"]\r\n,[\"7\",\".\",\".\",\".\",\"2\",\".\",\".\",\".\",\"6\"]\r\n,[\".\",\"6\",\".\",\".\",\".\",\".\",\"2\",\"8\",\".\"]\r\n,[\".\",\".\",\".\",\"4\",\"1\",\"9\",\".\",\".\",\"5\"]\r\n,[\".\",\".\",\".\",\".\",\"8\",\".\",\".\",\"7\",\"9\"]]\r\n";
+            string stringStart = "[[\"8\",\"3\",\".\",\".\",\"7\",\".\",\".\",\".\",\".\"]\r\n,[\"6\",\".\",\".\",\"1\",\"9\",\"5\",\".\",\".\",\".\"]\r\n,[\".\",\"9\",\"8\",\".\",\".\",\".\",\".\",\"6\",\".\"]\r\n,[\"8\",\".\",\".\",\".\",\"6\",\".\",\".\",\".\",\"3\"]\r\n,[\"4\",\".\",\".\",\"8\",\".\",\"3\",\".\",\".\",\"1\"]\r\n,[\"7\",\".\",\".\",\".\",\"2\",\".\",\".\",\".\",\"6\"]\r\n,[\".\",\"6\",\".\",\".\",\".\",\".\",\"2\",\"8\",\".\"]\r\n,[\".\",\".\",\".\",\"4\",\"1\",\"9\",\".\",\".\",\"5\"]\r\n,[\".\",\".\",\".\",\".\",\"8\",\".\",\".\",\"7\",\"9\"]]\r\n";
             int[,] sudokuArr = splitingTheString(stringStart);
+            bool result = true;
 
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < 9; i++)
             {
-               
-                for (int j = 0; j < 10; j++)
+                if (!result)
                 {
-                   bool resultRow = istheNumberUnique(sudokuArr[0,0],sudokuArr);
-
-
+                    break;
                 }
-                Console.WriteLine();
+                //Array for chechink columns
+                int[] colums = new int[9];
+                for (int k = 0; k < 9; k++)
+                {
+                    colums[k] = sudokuArr[k, i];
+                }
+                // Array for checking rows
+                int[] row = new int[9];
+                for (int k = 0; k < 9; k++)
+                {
+                    row[k] = sudokuArr[i, k];
+                }
+                //Checking each element in sudokuArr by Rows, Columns and Square
+                for (int j = 0; j < 9; j++)
+                {
+                    if (!result)
+                    {
+                        break;
+                    }
+                    result = istheNumberUnique(sudokuArr[i, j], row);
+                    if (result)
+                    {
+                        result = istheNumberUnique(sudokuArr[i, j], colums);
+                    }
+                    if (result)
+                    {
+                        // Array for checking square
+                        int[] square = new int[9];
+                        int indexSquare = 0;
+                        for (int k = (j / 3) * 3; k < (j / 3) * 3 + 3; k++)
+                        {
+                            for (int l = (j / 3) * 3; l < (j / 3) * 3 + 3; l++)
+                            {
+                                square[indexSquare] = sudokuArr[k, l];
+                                indexSquare++;
+                            }
+                        }
+                        result = istheNumberUnique(sudokuArr[i, j], colums);
+                    }
+                }
+
+
             }
-         
+            Console.WriteLine(result);
+
         }
 
         static int[,] splitingTheString(string stringStart)
@@ -38,6 +78,7 @@
                     if (int.TryParse(elementsInRow[j], out int number) == true)
                     {
                         int valueInNumber = Convert.ToInt16(elementsInRow[j]);
+
                         sudokuArr[i, k] = valueInNumber;
                     }
                     else
@@ -63,7 +104,11 @@
                     numberOfOccurrences++;
                 }
             }
-            return (numberOfOccurrences == 1);
+            if (numberOfOccurrences > 1 && valueToSearch != 0)
+            {
+                resultToReturn = false;
+            }
+            return resultToReturn;
         }
     }
 }
