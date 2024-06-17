@@ -12,6 +12,11 @@ namespace SudokuValide
         public const int SIZE_SUDOKU = 9;
         public const int SQUARE_LENGHT = 3;
 
+        /// <summary>
+        /// Checking sudoku array [,] is valide by columns, rows and squares 
+        /// </summary>
+        /// <param name="sudokuArr"></param>
+        /// <returns> bool true/false </returns>
         public bool checkingSudokuArray(int[,] sudokuArr)
         {
             bool result = true;
@@ -34,6 +39,11 @@ namespace SudokuValide
             return result;
         }
 
+        /// <summary>
+        /// Spliting the string sudoku into int array [,]
+        /// </summary>
+        /// <param name="stringStart"></param>
+        /// <returns> int array [,]</returns>
         public int[,] splitingTheString(string stringStart) //Splitting entered string 
         {
             int[,] sudokuArr = new int[SIZE_SUDOKU, SIZE_SUDOKU];
@@ -56,7 +66,7 @@ namespace SudokuValide
             }
             return sudokuArr;
         }
-
+        
         private string clearStringOfExtraCharacters(string stringStart)
         {
             stringStart = stringStart.Replace("[", string.Empty);
@@ -116,7 +126,12 @@ namespace SudokuValide
             }
             return square;
         }
-
+        /// <summary>
+        /// Returns true if the number is unique in array [], false if not
+        /// </summary>
+        /// <param name="valueToSearch"></param>
+        /// <param name="arrayToSearch"></param>
+        /// <returns> bool true/false </returns>
         public bool istheNumberUnique(int valueToSearch, int[] arrayToSearch) //Verifying if number is unique in the array []
         {
             bool resultToReturn = true; int numberOfOccurrences = 0;
