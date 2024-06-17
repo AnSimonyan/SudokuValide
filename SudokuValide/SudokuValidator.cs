@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace SudokuValide
 {
 
-    internal class SudokuValide
+    public class SudokuValidator
     {
         public const int SIZE_SUDOKU = 9;
         public const int SQUARE_LENGHT = 3;
@@ -39,21 +39,20 @@ namespace SudokuValide
             int[,] sudokuArr = new int[SIZE_SUDOKU, SIZE_SUDOKU];
             char[] separators = new char[] { '\r' }; //Splitting the string into rows
 
-            stringStart = clearStringOfExtraCharacters(stringStart); //Clear the string of extra characters
+            stringStart = clearStringOfExtraCharacters(stringStart); //Clear of extra characters
 
             string[] rowsEntered = stringStart.Split(separators, StringSplitOptions.RemoveEmptyEntries);// In rowsEntered we have an array of each row sudoku
-            int i = 0; 
-            foreach (string row in rowsEntered) //Splitting each row into array[,]
+           
+            for (int i = 0; i< SIZE_SUDOKU; i++) //Splitting each row into array[,]
             {
                 char[] separatorsRow = new char[] { '\"' };
-                string[] elementsInRow = row.Split(separatorsRow, StringSplitOptions.RemoveEmptyEntries);
+                string[] elementsInRow = rowsEntered[i].Split(separatorsRow, StringSplitOptions.RemoveEmptyEntries);
                 
                 for (int j = 0; j < SIZE_SUDOKU ; j++)
                 {
                     sudokuArr[i, j] = 0;
                     if (int.TryParse(elementsInRow[j], out int valueInNumber) == true) sudokuArr[i, j] = valueInNumber;
                 }
-                i = i + 1;
             }
             return sudokuArr;
         }
@@ -68,7 +67,7 @@ namespace SudokuValide
         }
 
         /// <summary>
-        /// test test test
+        /// return an array of current 
         /// </summary>
         /// <param name="sudokuArr"></param>
         /// <param name="columnNumber"></param>
