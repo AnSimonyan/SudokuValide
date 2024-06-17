@@ -27,8 +27,8 @@ namespace SudokuValide
                     int[] column = getCurrentColumn(sudokuArr, j);
                     if (!istheNumberUnique(sudokuArr[i, j], column)) return false; 
 
-                    int[] square = getCurrentSquare(sudokuArr, j);
-                    if (istheNumberUnique(sudokuArr[i, j], square)) return false;
+                    int[] square = getCurrentSquare(sudokuArr, i, j);
+                    if (!istheNumberUnique(sudokuArr[i, j], square)) return false;
                 }
             }
             return result;
@@ -67,11 +67,11 @@ namespace SudokuValide
         }
 
         /// <summary>
-        /// return an array of current 
+        /// Return an int array[] of column by column number
         /// </summary>
         /// <param name="sudokuArr"></param>
         /// <param name="columnNumber"></param>
-        /// <returns></returns>
+        /// <returns>int array[]</returns>
         public int[] getCurrentColumn(int[,] sudokuArr, int columnNumber)
         {
             int[] column = new int[SIZE_SUDOKU];
@@ -79,6 +79,12 @@ namespace SudokuValide
             return column;
         }
 
+        /// <summary>
+        /// Return an int array[] of row by row number
+        /// </summary>
+        /// <param name="sudokuArr"></param>
+        /// <param name="rowNumber"></param>
+        /// <returns> int array[] </returns>
         public int[] getCurrentRow(int[,] sudokuArr, int rowNumber)
         {
             int[] row = new int[SIZE_SUDOKU];
@@ -86,16 +92,23 @@ namespace SudokuValide
             return row;
         }
 
-        public int[] getCurrentSquare(int[,] sudokuArr, int columnNumber)
+        /// <summary>
+        /// Return an int array[] of square by column & row numbers
+        /// </summary>
+        /// <param name="sudokuArr"></param>
+        /// <param name="rowNumber"></param>
+        /// <param name="columnNumber"></param>
+        /// <returns>int array[] </returns>
+        public int[] getCurrentSquare(int[,] sudokuArr, int rowNumber, int columnNumber)
         {
             // Array for checking square
             int[] square = new int[SIZE_SUDOKU]; int indexSquare = 0;
-            int startSquare = (columnNumber / SQUARE_LENGHT) * SQUARE_LENGHT;
-            int endSquare = startSquare + SQUARE_LENGHT;
-
-            for (int i = startSquare; i < endSquare; i++)
+            int startSquareRow      = (rowNumber / SQUARE_LENGHT) * SQUARE_LENGHT;
+            int startSquareColumn   = (columnNumber / SQUARE_LENGHT) * SQUARE_LENGHT;
+            
+            for (int i = startSquareRow; i < startSquareRow + SQUARE_LENGHT; i++)
             {
-                for (int j = startSquare; j < endSquare; j++)
+                for (int j = startSquareColumn; j < startSquareColumn + SQUARE_LENGHT; j++)
                 {
                     square[indexSquare] = sudokuArr[i, j];
                     indexSquare++;
